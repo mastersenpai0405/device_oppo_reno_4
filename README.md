@@ -21,7 +21,7 @@
 
 ---
 ## Kernel sources
-"https://github.com/Klozz/android_kernel_xiaomi_sm6250"
+https://github.com/dereference23/positron_miatoll/tree/twrp-10.0
 
 ---
 ## Copyright notice
