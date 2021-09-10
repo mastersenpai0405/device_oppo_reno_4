@@ -27,15 +27,75 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-import /init.recovery.qcom_decrypt.rc
+on fs
+     install_keyring
+     setprop crypto.ready 1
 
-#service unified-script /system/bin/unified-script.sh
-#    user root
-#    group root
-#    disabled
-#    oneshot
-#    seclabel u:r:recovery:s0
+service keystore_auth /sbin/keystore_auth
+    oneshot
+    user system
+    group root
+    disabled
+    seclabel u:r:recovery:s0
 
-#on boot
-#    chmod 0777 /system/bin/unified-script.sh
-#    start unified-script
+# keystore is started and stopped on demand by TWRP
+service keystore /sbin/keystore /tmp/misc/keystore
+    user root
+    group root drmrpc readproc
+    disabled
+    seclabel u:r:recovery:s0
+
+on init
+     start vendor.qseecomd
+     start keymaster-4-0
+     start hwservicemanager
+     start servicemanager
+
+service qseecomd /system/bin/qseecomd
+    user root
+    group root
+    disabled
+    seclabel u:r:recovery:s0
+
+service keymaster-4-0 /system/bin/android.hardware.keymaster@4.0-service-qti
+    user root
+    group group drmrpc
+    disabled
+    seclabel u:r:recovery:s0
+
+service gatekeeper-1-0 /system/bin/android.hardware.gatekeeper@1.0-service-qti
+    user root
+    group root
+    disabled
+    seclabel u:r:recovery:s0
+
+# FDE
+on post-fs-data
+    mkdir /data/vendor_de 0770 root root
+    mkdir /data/vendor_de/0 0770 root root
+    mkdir /data/vendor_de/0/cryptoeng 0770 root root
+
+service hal_cryptoeng_oppo /system/bin/vendor.oppo.hardware.cryptoeng@1.0-service
+    class main
+    user root
+    group root input sdcard_rw sdcard_r
+    disabled
+    seclabel u:r:recovery:s0
+
+on property:crypto.ready=0
+    stop qseecomd
+    stop keymaster-4-0
+    stop gatekeeper-1-0
+    stop hal_cryptoeng_oppo
+    stop servicemanager
+    stop hwservicemanager
+
+on property:crypto.ready=1
+    start qseecomd
+
+on property:vendor.sys.listeners.registered=true
+    start keymaster-4-0
+    start gatekeeper-1-0
+    start hal_cryptoeng_oppo
+    start servicemanager
+    start hwservicemanager

@@ -21,13 +21,6 @@
 # dynamic partition stuff
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 
-# use twrp-common for decryption
-BOARD_USES_QCOM_FBE_DECRYPTION := true
-
-PRODUCT_PACKAGES_ENG += \
-    qcom_decrypt \
-    qcom_decrypt_fbe
-
 # fastbootd stuff
 PRODUCT_PACKAGES += \
     android.hardware.fastboot@1.0-impl-mock \
