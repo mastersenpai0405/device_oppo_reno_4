@@ -16,6 +16,9 @@
 # limitations under the License.
 #
 
+# Device Path
+DEVICE_PATH := device/oppo/CPH2113
+
 # Architecture
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-2a
@@ -44,11 +47,12 @@ TARGET_BOARD_PLATFORM_GPU := qcom-adreno618
 QCOM_BOARD_PLATFORMS += atoll
 
 # Kernel
-BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 \
-	androidboot.hardware=qcom \
-	androidboot.console=ttyMSM0 \
-	androidboot.memcg=1 \
-	lpm_levels.sleep_disabled=1 \
+BOARD_KERNEL_CMDLINE := \
+    console=ttyMSM0,115200n8 \
+    androidboot.hardware=qcom \
+    androidboot.console=ttyMSM0 \
+    androidboot.memcg=1 \
+    lpm_levels.sleep_disabled=1 \
 	video=vfb:640x400,bpp=32,memsize=3072000 \
 	msm_rtb.filter=0x237 \
 	service_locator.enable=1 \
@@ -81,14 +85,10 @@ BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 # --- prebuilt kernel
 BOARD_INCLUDE_RECOVERY_DTBO := true
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
-KERNEL_DIRECTORY := $(DEVICE_PATH)/prebuilt
-BOARD_PREBUILT_DTBIMAGE_DIR := $(KERNEL_DIRECTORY)/dtbs
-BOARD_PREBUILT_DTBOIMAGE := $(KERNEL_DIRECTORY)/dtbo.img
-TARGET_PREBUILT_KERNEL := $(KERNEL_DIRECTORY)/Image.gz
 #---
 
 # Assert
-TARGET_OTA_ASSERT_DEVICE := curtana,joyeuse,gram,excalibur
+TARGET_OTA_ASSERT_DEVICE := CPH2113,CPH2113PU
 
 # Avb
 BOARD_AVB_ENABLE := true
@@ -98,7 +98,6 @@ BOARD_AVB_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
 BOARD_FLASH_BLOCK_SIZE := 262144
 BOARD_BOOTIMAGE_PARTITION_SIZE := 134217728
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 134217728
-BOARD_DTBOIMG_PARTITION_SIZE := 8388608
 
 # Dynamic Partition
 BOARD_SUPER_PARTITION_SIZE := 9126805504
@@ -129,9 +128,6 @@ TW_INCLUDE_CRYPTO_FBE := true
 TW_INCLUDE_FBE_METADATA_DECRYPT := true
 BOARD_USES_METADATA_PARTITION := true
 
-# haptics
-TW_SUPPORT_INPUT_1_2_HAPTICS := true
-
 # TWRP specific build flags
 TW_THEME := portrait_hdpi
 RECOVERY_SDCARD_ON_DATA := true
@@ -154,9 +150,9 @@ PLATFORM_VERSION := 16.1.0
 
 # SHRP
 SHRP_OFFICIAL := true
-SHRP_DEVICE_CODE := miatoll
-SHRP_PATH := device/xiaomi/$(SHRP_DEVICE_CODE)
-SHRP_MAINTAINER := dereference
+SHRP_DEVICE_CODE := CPH2113
+SHRP_PATH := $((DEVICE_PATH)
+SHRP_MAINTAINER := @dondenpai05
 SHRP_REC_TYPE := Treble
 SHRP_DEVICE_TYPE := SAR
 SHRP_REC := /dev/block/bootdevice/by-name/recovery

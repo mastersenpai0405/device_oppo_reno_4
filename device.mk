@@ -21,10 +21,6 @@
 # dynamic partition stuff
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 
-# Reserve 64MB in dynamic partitions
-#BOARD_SYSTEMIMAGE_PARTITION_RESERVED_SIZE := 67108864
-#BOARD_VENDORIMAGE_PARTITION_RESERVED_SIZE := 67108864
-
 # use twrp-common for decryption
 BOARD_USES_QCOM_FBE_DECRYPTION := true
 
